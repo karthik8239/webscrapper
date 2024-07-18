@@ -12,15 +12,11 @@ def scrape_deeds(date):
         page.goto(url)
         page.click('a:has-text("Document Type")')
         page.screenshot(path='test_screenshot.png')
-        from_date_button = 'button:has-text("Close")'
-        to_date_button = 'button:has-text("Close")'
-        # Click the button to open the date picker for the "From" date
-        page.click(from_date_button)
-        page.fill('input[name="fromdate"]', date)
+        ##page.wait_for_selector('input[name="fromdate"]')
+        from_date_input = 'input[name="fromdate"][placeholder="MM/DD/YYYY"]'
+        page.locator(from_date_input).scroll_into_view_if_needed()
+        page.fill(from_date_input, date)
         page.screenshot(path='after_from_date_screenshot.png')
-        # page.click(to_date_selector)
-        # page.fill(to_date_selector, date)
-        # page.screenshot(path='after_date_screenshot.png')
         browser.close()
     return 0
 
