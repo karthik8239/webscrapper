@@ -6,16 +6,21 @@ from datetime import datetime
 
 def scrape_deeds(date):
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(headless = False)
         page = browser.new_page()
         url = 'https://rod.beaufortcountysc.gov/BrowserViewDMP/'
         page.goto(url)
         page.click('a:has-text("Document Type")')
-        page.screenshot(path='test_screenshot.png')
-        ##page.wait_for_selector('input[name="fromdate"]')
-        from_date_input = 'input[name="fromdate"][placeholder="MM/DD/YYYY"]'
-        page.locator(from_date_input).scroll_into_view_if_needed()
+        page.wait_for_selector('form[name="docSearchForm"]', state='visible')
+        from_date_input = 'form[name="docSearchForm"] input[name="fromdate"]'
+        page.wait_for_selector(from_date_input, state='visible')
+        page.wait_for_selector(to_date_input, state='visible')
+        # Clear the input field before filling
+        #         # Fill the "From" date input
         page.fill(from_date_input, date)
+        to_date_input = 'form[name="docSearchForm"] input[name="todate"]'
+        page.fill(to_date_input, date)
+        page.wait_for_timeout(1000)
         page.screenshot(path='after_from_date_screenshot.png')
         browser.close()
     return 0
