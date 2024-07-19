@@ -14,13 +14,19 @@ def scrape_deeds(date):
         page.wait_for_selector('form[name="docSearchForm"]', state='visible')
         from_date_input = 'form[name="docSearchForm"] input[name="fromdate"]'
         page.wait_for_selector(from_date_input, state='visible')
-        page.wait_for_selector(to_date_input, state='visible')
         # Clear the input field before filling
         #         # Fill the "From" date input
         page.fill(from_date_input, date)
         to_date_input = 'form[name="docSearchForm"] input[name="todate"]'
+        page.wait_for_selector(to_date_input, state='visible')
         page.fill(to_date_input, date)
-        page.wait_for_timeout(1000)
+        input_selector = 'form[name="docSearchForm"] .tree-view-wrapper .tree-checkbox'
+        page.click(input_selector)
+        search_selector = 'form[name="docSearchForm"] button.btn-xs.btn-primary'
+        page.wait_for_selector(search_selector, state='visible')
+        ##page.click(search_selector)
+        ##page.wait_for_load_state('networkidle', timeout=60000)
+        ##select all deeds
         page.screenshot(path='after_from_date_screenshot.png')
         browser.close()
     return 0
