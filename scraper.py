@@ -4,64 +4,14 @@ import boto3
 import pickle
 from datetime import datetime
 from bs4 import BeautifulSoup
+from botocore.exceptions import ClientError
 
-
-##method to scrap_the_deeds
-def scrape_deeds(date):
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless = False)
-        page = browser.new_page()
-        url = 'https://rod.beaufortcountysc.gov/BrowserViewDMP/'
-        ##url = 'https://roddaybook.charlestoncounty.org/'
-        try:
-            page.goto(url)
-            page.click('a:has-text("Document Type")')
-            page.wait_for_selector('form[name="docSearchForm"]', state='visible')
-            from_date_input = 'form[name="docSearchForm"] input[name="fromdate"]'
-            page.fill(from_date_input, date)
-            to_date_input = 'form[name="docSearchForm"] input[name="todate"]'
-            page.fill(to_date_input, date)
-            input_selector = 'form[name="docSearchForm"] .tree-view-wrapper .tree-checkbox'
-            page.click(input_selector)
-            search_selector = 'form[name="docSearchForm"] .col-sm-2 button.btn-xs.btn-primary'
-            page.click(search_selector)
-            with page.expect_navigation(wait_until="networkidle"):
-                page.click(search_selector)
-            # Wait for the loading indicator to disappear
-            loading_indicator_selector = 'h3:has-text("Please Wait...")'
-            page.wait_for_selector(loading_indicator_selector, state='hidden')
-            # Wait for the table to be visible
-            table_selector = 'form[name="docSearchForm"] .ag-header-container'
-            #table_selector = 'form[name="docSearchForm"] .ag-header-container'
-            page.wait_for_selector(table_selector, state = 'visible')
-            rows = page.query_selector_all('.ag-row')
-            deeds_info = {}
-            for row in rows:
-                cells = row.query_selector_all('.ag-cell')
-                if len(cells) >= 10:  # Ensure we have all expected cells
-                    instr_num = cells[5].inner_text().strip()  #  Instr# is in the 6th column (index 5)
-                    deeds_info[instr_num] = {
-                        'Name': cells[1].inner_text().strip(),
-                        'Cross_Party': cells[2].inner_text().strip(),
-                        'Date': cells[3].inner_text().strip(),
-                        'Type': cells[4].inner_text().strip(),
-                        'Book': cells[6].inner_text().strip(),
-                        'Page': cells[7].inner_text().strip(),
-                        'Legal': cells[8].inner_text().strip(),
-                        'Consideration': cells[9].inner_text().strip()
-                    }
-            print(f"Extracted information for {len(deeds_info)} deeds")
-        except PlaywrightTimeoutError as e:
-            print(f"Timeout error: {str(e)}")
-        except Exception as e:
-            print(f"An error Occurred: {str(e)}")
-
-        # Wait for the table to be visible
-        page.screenshot(path='after_deeds_screenshot.png')
-        browser.close()
-    return deeds_info
-
-
+"""
+ function to scrap the deeds for the date
+    using playwright chromium
+    :param date: date which we are scrapping the data
+    :return: deed_info,the dictionary of scrapped deed_data
+"""
 def scrape_deeds_new(date):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless = False)
@@ -117,9 +67,60 @@ def scrape_deeds_new(date):
         except Exception as e:
             print(f"An error Occurred:{str(e)}")
         return deed_info
+"""
+    Check if an S3 bucket exists.
+
+    :param bucket_name: Name of the bucket to check
+    :return: True if bucket exists, else False
+    """
+def check_bucket_exsists(bucket_name):
+    s3_client = boto3.client('s3')
+    try:
+        s3_client.head_bucket(Bucket=bucket_name)
+        return False
+    except ClientError:
+        return True
 
 
-##Passing the date as argument in the main method
+"""
+ create a S3 Bucket using boto3
+
+    :param bucket_name: Bucket needs to create
+    :return: True if bucket was created, else False
+"""
+def create_bucket(bucket_name):
+    try:
+        s3_client = boto3.client('s3')
+        location = {'LocationConstraint': 'us-east-2'}
+        s3_client.create_bucket(Bucket = bucket_name, CreateBucketConfiguration=location)
+    except ClientError as e:
+        print(f"Error creating the bucket: {e}")
+        return False
+    return True
+
+
+"""
+ Upload a file to an S3 bucket
+
+    :param file_name: File to upload
+    :param bucket_name: Bucket to upload to
+    :param object_name: S3 object name. If not specified then file_name is used
+    :return: True if file was uploaded, else False
+"""
+def upload_to_s3(file_name, bucket_name, object_name=None):
+    if object_name is None:
+        object_name = file_name
+    
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(file_name,bucket_name,object_name)
+        print(response)
+    except Exception as e:
+        print(f"Error Uploading the file:{str(e)}")
+        return False
+    return True    
+
+##Passing the date as argument to the function in the main method
 if __name__ == "__main__":
     date = '2024-07-01'
     try:
@@ -129,5 +130,15 @@ if __name__ == "__main__":
         with open(file_name,'wb') as f:
             pickle.dump(deed_info,f)
         print(f"deed information saved to {file_name}")
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        bucket_name = f'deed-info-data-2207-8985392231'
+        object_name = f"{file_name}_{timestamp}"
+        print(bucket_name)
+        if check_bucket_exsists:
+            create_bucket(bucket_name)
+        if(upload_to_s3(file_name, bucket_name, object_name)):
+            print(f"File {file_name} uploaded to {bucket_name}/{object_name}")
+        else:
+            print("File upload failed")
     except Exception as e:
         print(f"An Unexpected error occurred: {str(e)}")
