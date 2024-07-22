@@ -1,11 +1,16 @@
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 import pandas as pd
 import boto3
+import json
 import pickle
 from datetime import datetime
 from bs4 import BeautifulSoup
 from botocore.exceptions import ClientError
 
+
+def load_config(config_file='config.json'):
+        with open(config_file, 'r') as f:
+            return json.load(f)
 """
  function to scrap the deeds for the date
     using playwright chromium
@@ -122,7 +127,9 @@ def upload_to_s3(file_name, bucket_name, object_name=None):
 
 ##Passing the date as argument to the function in the main method
 if __name__ == "__main__":
-    date = '2024-07-01'
+    config = load_config()
+    date = config.get('date')
+    bucket_name = config.get('bucket_name')
     try:
         deed_info = scrape_deeds_new(date)
         ##deeds = scrape_deeds(date)
@@ -131,7 +138,6 @@ if __name__ == "__main__":
             pickle.dump(deed_info,f)
         print(f"deed information saved to {file_name}")
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        bucket_name = f'deed-info-data-2207-8985392231'
         object_name = f"{file_name}_{timestamp}"
         print(bucket_name)
         if check_bucket_exsists:
