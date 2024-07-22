@@ -1,10 +1,8 @@
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
-import pandas as pd
 import boto3
 import json
 import pickle
 from datetime import datetime
-from bs4 import BeautifulSoup
 from botocore.exceptions import ClientError
 
 
@@ -19,7 +17,7 @@ def load_config(config_file='config.json'):
 """
 def scrape_deeds_new(date):
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless = False)
+        browser = p.chromium.launch(headless = True)
         page = browser.new_page()
         url = 'https://roddaybook.charlestoncounty.org/'
         deed_info = {}
