@@ -19,7 +19,7 @@ aws configure
 
 This command will prompt you to enter your AWS access key ID, secret access key, region, and output format. The credentials will be stored in ~/.aws/credentials and the configuration in ~/.aws/config.
 
-## project structure
+## Project Structure
 .
 ├── setup_aws.sh
 ├── Dockerfile
@@ -29,6 +29,7 @@ This command will prompt you to enter your AWS access key ID, secret access key,
 ├── requirements.txt
 ├── scraper.py
 └── script.sh
+
 
 
 ## Configuration File
