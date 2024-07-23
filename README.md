@@ -37,6 +37,8 @@ Customize the content for the required date,url of website you want to scrap the
 
 -> python main.py
 
+We can see the deed_info.pkl file saving in our repository
+
 ![Scrapping_execution_python_Screenshot](https://github.com/user-attachments/assets/ec24ea29-3885-471d-a6ce-3f19a7284467)
 
 
