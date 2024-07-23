@@ -1,6 +1,6 @@
 # Deeds Scraper and Uploader:
 
-This project scrapes deed information from the charlestoncounty deeds url and uploads the data to an AWS S3 bucket. The project is containerized using Docker and utilizes AWS ECR for storing Docker images. The application is built using Python with Playwright for web scraping and Boto3 for interacting with AWS services.
+This project scrapes deed information from the charlestoncounty deeds url("https://roddaybook.charlestoncounty.org/") and uploads the data to an AWS S3 bucket. The project is containerized using Docker and utilizes AWS ECR for storing Docker images. The application is built using Python with Playwright for web scraping and Boto3 for interacting with AWS services.
 
 
 ## Prerequisites:
