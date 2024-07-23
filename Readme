@@ -14,7 +14,7 @@ aws configure
 
 This command will prompt you to enter your AWS access key ID, secret access key, region, and output format. The credentials will be stored in ~/.aws/credentials and the configuration in ~/.aws/config.
 
-Configuration File
+## Configuration File
 config.json file in the project root directory with the following content:
 
 Customize the content for the required date,url of website you want to scrap the data
@@ -36,7 +36,7 @@ Customize the content for the required date,url of website you want to scrap the
 in setup_aws.sh file
 So modify the credentials in the setup_aws.sh to point your aws_secret_Access_key,secret_key and region
 
-Build docker command (my-deeds-app -> image name):
+## Build docker command (my-deeds-app -> image name):
 
 docker build -t my-deeds-app .
 
