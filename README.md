@@ -41,9 +41,7 @@ Customize the content for the required date,url of website you want to scrap the
   "date": "MM/DD/YYYY",
   "bucket_name": "your-s3-bucket-name",
   "url":"Your_url_page"
-}
 
-## Files:
 
 ## Files and Their Purpose
 
@@ -57,7 +55,7 @@ Customize the content for the required date,url of website you want to scrap the
   
 - **`script.sh`**: Script for creating and pushing the Docker image to the AWS ECR container registry.
   
-- **`setup_aws.sh`**: Script for setting up AWS credentials required to run the scraper data in the Docker container.
+- **`setup_aws.sh`**: Script for setting up AWS credentials required to run the scrapped data in the Docker container.
 
   
 ## Execution in Local steps:
