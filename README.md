@@ -45,13 +45,21 @@ Customize the content for the required date,url of website you want to scrap the
 
 ## Files:
 
-scrapper.py: This file deals with scrapping the data from website using playwright
-cloud.py: This file deals with the AWS assets i.e, creation of s3 buckets using boto3 and uploading .pkl file
-main.py: This is root main file deals with calling the functions of cloud and scrapper files 
-dockerfile: This file has script required for running in the docker container
-script.sh: This file has script required for creating and pushing the docke image to the AWS ECR container registy
-setup_aws.sh: This file has script required for settign up aws credentials to run the scrapped data in Docker container
+## Files and Their Purpose
 
+- **`scraper.py`**: Handles scraping data from a website using Playwright.
+  
+- **`cloud.py`**: Manages AWS assets, including creating S3 buckets with Boto3 and uploading `.pkl` files.
+  
+- **`main.py`**: The main entry point that coordinates functions from `cloud.py` and `scraper.py`.
+  
+- **`Dockerfile`**: Contains instructions for building the Docker image for running the application in a Docker container.
+  
+- **`script.sh`**: Script for creating and pushing the Docker image to the AWS ECR container registry.
+  
+- **`setup_aws.sh`**: Script for setting up AWS credentials required to run the scraper data in the Docker container.
+
+  
 ## Execution in Local steps:
 
 -> pip install -r requirements.txt
