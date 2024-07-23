@@ -1,11 +1,12 @@
-ACCOUNT_ID=425923910586
-REGION=us-east-2
-REPOSITORY_NAME=webscrapper
-IMAGE_NAME=my-deeds-app
+ACCOUNT_ID=<YOUR_Account_ID>
+REGION=<Your_Region>
+REPOSITORY_NAME=<Your_ECR_Public_repo_name>
+IMAGE_NAME=<Docker_image_name>
 TAG=latest
 
-
-docker build -t my-deeds-app .
+#Building the docker image
+echo "Building the docker image"
+docker build -t $IMAGE_NAME .
 
 #Tag the docker image
 echo "tagging the docker image"

@@ -19,7 +19,7 @@ if __name__ == "__main__":
     bucket_name = config.get('bucket_name')
     url = config.get('url')
     try:
-        deed_info = scrape_deeds_new(date)
+        deed_info = scrape_deeds_new(date,url)
         file_name = f"deed_info_{date.replace('/', '_')}.pkl"
         with open(file_name, 'wb') as f:
             pickle.dump(deed_info, f)
