@@ -41,6 +41,8 @@ We can see the deed_info.pkl file saving in our repository
 
 ![Scrapping_execution_python_Screenshot](https://github.com/user-attachments/assets/ec24ea29-3885-471d-a6ce-3f19a7284467)
 
+![Scrapped_data_pkl_file_screenshot](https://github.com/user-attachments/assets/0677a6d5-f2ae-4a87-b607-d0d69d91bded)
+
 
 ## Docker exectuion steps:
 
