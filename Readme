@@ -1,12 +1,13 @@
-Project: Deeds Scraper and Uploader:
+# Project: Deeds Scraper and Uploader:
 
 This project scrapes deed information from the charlestoncounty deeds url and uploads the data to an AWS S3 bucket. The project is containerized using Docker and utilizes AWS ECR for storing Docker images. The application is built using Python with Playwright for web scraping and Boto3 for interacting with AWS services.
 
-Prerequisites:
+## Prerequisites:
 Docker: Ensure Docker is installed and running on your local machine. Install Docker
 AWS CLI: Ensure AWS CLI is installed and configured with the necessary permissions. Install AWS CLI
 Python: Ensure Python is installed. Install Python
 
+## AWS Configuration
 
 The AWS credentials should be configured using the AWS CLI:
 aws configure
@@ -24,13 +25,13 @@ Customize the content for the required date,url of website you want to scrap the
 }
 
 
-Execution in Local steps:
+## Execution in Local steps:
 
 -> pip install -r requirements.txt
 
 -> python main.py
 
-Docker exectuion steps:
+## Docker exectuion steps:
 
 in setup_aws.sh file
 So modify the credentials in the setup_aws.sh to point your aws_secret_Access_key,secret_key and region
@@ -45,7 +46,7 @@ docker run -it --rm my-deeds-app
 
 You can see the aws_s3_bucket contains the .pkl file
 
-ECR_DOCKER_image_Steps:
+## ECR_DOCKER_image_Steps:
 
 configure your credentials in the script.sh to point your ECR  repository name , account id ,image name and region
 
