@@ -43,6 +43,14 @@ Customize the content for the required date,url of website you want to scrap the
   "url":"Your_url_page"
 }
 
+## Files:
+
+scrapper.py: This file deals with scrapping the data from website using playwright
+cloud.py: This file deals with the AWS assets i.e, creation of s3 buckets using boto3 and uploading .pkl file
+main.py: This is root main file deals with calling the functions of cloud and scrapper files 
+dockerfile: This file has script required for running in the docker container
+script.sh: This file has script required for creating and pushing the docke image to the AWS ECR container registy
+setup_aws.sh: This file has script required for settign up aws credentials to run the scrapped data in Docker container
 
 ## Execution in Local steps:
 
