@@ -2,10 +2,12 @@
 
 This project scrapes deed information from the charlestoncounty deeds url and uploads the data to an AWS S3 bucket. The project is containerized using Docker and utilizes AWS ECR for storing Docker images. The application is built using Python with Playwright for web scraping and Boto3 for interacting with AWS services.
 
+
 ## Prerequisites:
 Docker: Ensure Docker is installed and running on your local machine. Install Docker
 AWS CLI: Ensure AWS CLI is installed and configured with the necessary permissions. Install AWS CLI
 Python: Ensure Python is installed. Install Python
+
 
 ## AWS Configuration
 
