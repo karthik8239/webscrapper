@@ -19,7 +19,8 @@ This command will prompt you to enter your AWS access key ID, secret access key,
 ## Configuration File
 config.json file in the project root directory with the following content:
 
-Customize the content for the required date,url of website you want to scrap the data
+Customize the content for the required date,url of website you want to scrap the data:
+
 {
   "date": "MM/DD/YYYY",
   "bucket_name": "your-s3-bucket-name",
