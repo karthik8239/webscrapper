@@ -17,4 +17,4 @@ RUN pip install awscli
 COPY . .
 
 # Run scraper.py when the container launches
-CMD ["python", "scraper.py"]
+CMD ["python", "main.py"]

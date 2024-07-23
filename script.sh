@@ -1,8 +1,11 @@
-ACCOUNT_ID=4259-2391-0586
+ACCOUNT_ID=425923910586
 REGION=us-east-2
-REPOSITORY_NAME="webscrapper"
+REPOSITORY_NAME=webscrapper
 IMAGE_NAME=my-deeds-app
 TAG=latest
+
+
+docker build -t my-deeds-app .
 
 #Tag the docker image
 echo "tagging the docker image"
