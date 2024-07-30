@@ -1,5 +1,14 @@
 import boto3
 from botocore.exceptions import ClientError
+import logging
+
+def get_default_region():
+    """
+    Get the default AWS region from the current session.
+    :return: Default AWS region.
+    """
+    session = boto3.session.Session()
+    return session.region_name
 
 def check_bucket_exists(bucket_name):
     """
@@ -7,9 +16,10 @@ def check_bucket_exists(bucket_name):
     :param bucket_name: Name of the bucket to check.
     :return: True if bucket exists, else False.
     """
+    logging.info(f"bucket exists {bucket_name}")
     s3_client = boto3.client('s3')
     try:
-        s3_client.head_bucket(Bucket=bucket_name)
+        s3_client.head_bucket(Bucket=bucket_name) #check if bucket exsits
         return True
     except ClientError:
         return False
@@ -20,10 +30,14 @@ def create_bucket(bucket_name):
     :param bucket_name: Name of the bucket to create.
     :return: True if bucket was created, else False.
     """
+    logging.info(f"create bucket {bucket_name}")
+    location = get_default_region()
     try:
         s3_client = boto3.client('s3')
-        location = {'LocationConstraint': 'us-east-2'}
-        s3_client.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=location)
+        if location == 'us-east-1':
+            s3_client.create_bucket(Bucket = bucket_name)
+        else:
+            s3_client.create_bucket(Bucket = bucket_name, CreateBucketConfiguration={'LocationConstraint':location})
     except ClientError as e:
         print(f"Error creating the bucket: {e}")
         return False
@@ -42,6 +56,7 @@ def upload_to_s3(file_name, bucket_name, object_name=None):
     
     s3_client = boto3.client('s3')
     try:
+        logging.info(f"uploading file{file_name} to s3 server")
         response = s3_client.upload_file(file_name, bucket_name, object_name)
         print(response)
     except Exception as e:

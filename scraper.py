@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+import logging
 
 def scrape_deeds_new(date,url):
     """
@@ -6,6 +7,7 @@ def scrape_deeds_new(date,url):
     :param date: Date for which the data is being scraped.
     :return: A dictionary containing the scraped deed data.
     """
+    logging.info(f"Starting to scrape data for date: {date} from URL: {url}")
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -52,6 +54,7 @@ def scrape_deeds_new(date,url):
                     else:
                         # No more pages to navigate
                         break
+            logging.info("scrapping done successfully")
             print(len(deed_info))
         except PlaywrightTimeoutError as e:
             print(f"Timeout error: {str(e)}")
